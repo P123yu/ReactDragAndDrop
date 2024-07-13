@@ -1,0 +1,70 @@
+
+
+npm install react-dnd react-dnd-html5-backend
+
+
+
+// App.js 
+
+
+import React from "react";
+import SurveyModal from "./SurveyModal";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+function App() {
+  return (
+    <div>
+      <DndProvider backend={HTML5Backend}>
+        <SurveyModal />
+      </DndProvider>
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
+// component 
+
+
+import React from "react";
+import { useDrop } from "react-dnd";
+import { NativeTypes } from "react-dnd-html5-backend";
+
+const SurveyModel = () => {
+  const [{ canDrop, isOver }, drop] = useDrop({
+    accept: [NativeTypes.FILE],
+    drop: (item, monitor) => {
+      if (monitor) {
+        const files = monitor.getItem().files;
+        handleDrop(files);
+      }
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+  });
+
+  const handleDrop = (files) => {
+    // Handle the dropped files here, e.g., upload to server, process, etc.
+    console.log("Dropped files:", files);
+  };
+
+  const isActive = canDrop && isOver;
+
+  return (
+    <div
+      ref={drop}
+      style={{ width: "100%", height: "200px", border: "1px solid black" }}
+    >
+      {isActive ? "Drop here" : "Drag files here"}
+    </div>
+  );
+};
+
+export default SurveyModel;
