@@ -1,0 +1,37 @@
+
+npm i react-draggable
+
+
+
+import React, { useRef } from "react";
+import Draggable from "react-draggable";
+
+const SurveyModal = () => {
+  const nodeRef = useRef(null);
+
+  const eventLogger = (e, data) => {
+    console.log("Event: ", e);
+    console.log("Data: ", data);
+  };
+
+  return (
+    <Draggable
+      axis="both"
+      handle=".handle"
+      defaultPosition={{ x: 0, y: 0 }}
+      grid={[25, 25]}
+      scale={1}
+      onStart={eventLogger}
+      onDrag={eventLogger}
+      onStop={eventLogger}
+      nodeRef={nodeRef} // Pass the ref to Draggable
+    >
+      <div ref={nodeRef}>
+        <div className="handle">Drag from here</div>
+        <div>This readme is really dragging on...</div>
+      </div>
+    </Draggable>
+  );
+};
+
+export default SurveyModal;
